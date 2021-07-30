@@ -15,5 +15,11 @@
   "repository": {
     "url": "https://github.com/samloh84/node-git-client",
     "type": "git"
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "glob": "^7.1.7",
+    "isomorphic-git": "^1.9.2",
+    "lodash": "^4.17.21"
   }
 }
