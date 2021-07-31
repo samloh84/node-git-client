@@ -1,10 +1,8 @@
-const path = require('path');
 const git = require('isomorphic-git');
 const http = require('isomorphic-git/http/node');
 const fs = require('fs');
 const Promise = require('bluebird');
 Promise.config({longStackTraces: true, warnings: true})
-const {glob, stat} = require('./util');
 
 const _ = require('lodash');
 
@@ -37,36 +35,10 @@ class GitClient {
     }
 
     add(params) {
-        let filepath = _.get(params, 'filepath');
 
-        let dir = _.get(params, 'dir');
+        _.set(params, 'fs', fs);
 
-        let pattern = path.resolve(dir, filepath);
-
-        return glob(pattern, {dot: true, ignore: ["**/.git/**"]})
-            .then(function (files) {
-                return stat(files)
-                    .then(function (file_stats) {
-                        let filePaths = _.map(_.filter(file_stats, function (file_stat) {
-                            return file_stat.stat.isFile();
-                        }), function (file_stat) {
-                            return path.relative(dir, file_stat.path);
-                        });
-
-                        return Promise.map(filePaths, function (filePath) {
-
-                            let addParams = _.assign({}, params, {
-                                fs: fs,
-                                filepath: filePath
-                            })
-                            return git.add(addParams)
-
-                        })
-                    })
-
-
-            });
-
+        return Promise.resolve(git.add(params));
     }
 
 
@@ -126,37 +98,9 @@ class GitClient {
     }
 
     status(params) {
-        let filepath = _.get(params, 'filepath');
+        _.set(params, 'fs', fs);
 
-        let dir = _.get(params, 'dir');
-
-        let pattern = path.resolve(dir, filepath);
-
-        return glob(pattern, {dot: true, ignore: ["**/.git/**"]})
-            .then(function (files) {
-                return stat(files)
-                    .then(function (file_stats) {
-                        let filePaths = _.map(_.filter(file_stats, function (file_stat) {
-                            return file_stat.stat.isFile();
-                        }), function (file_stat) {
-                            return path.relative(dir, file_stat.path);
-                        });
-
-                        return Promise.map(filePaths, function (filePath) {
-
-                            let statusParams = _.assign({}, params, {
-                                fs: fs,
-                                filepath: filePath
-                            })
-                            return Promise.props({
-                                filePath: filePath,
-                                status: git.status(statusParams)
-                            });
-                        })
-                    })
-
-
-            });
+        return Promise.resolve(git.status(params));
     }
 
 
