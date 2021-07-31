@@ -125,6 +125,12 @@ class GitClient {
         return Promise.resolve(git.branch(params));
     }
 
+    status(params){
+        _.set(params, 'fs', fs);
+
+        return Promise.resolve(git.status(params));
+    }
+
 
 }
 
