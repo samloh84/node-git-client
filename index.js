@@ -43,7 +43,7 @@ class GitClient {
 
         let pattern = path.resolve(dir, filepath);
 
-        return glob(pattern, {dot:true})
+        return glob(pattern, {dot: true})
             .then(function (files) {
                 return stat(files)
                     .then(function (file_stats) {
@@ -125,14 +125,14 @@ class GitClient {
         return Promise.resolve(git.branch(params));
     }
 
-    status(params){
+    status(params) {
         let filepath = _.get(params, 'filepath');
 
         let dir = _.get(params, 'dir');
 
         let pattern = path.resolve(dir, filepath);
 
-        return glob(pattern, {dot:true})
+        return glob(pattern, {dot: true})
             .then(function (files) {
                 return stat(files)
                     .then(function (file_stats) {
@@ -148,8 +148,10 @@ class GitClient {
                                 fs: fs,
                                 filepath: filePath
                             })
-                            return git.status(statusParams)
-
+                            return Promise.props({
+                                filePath: filePath,
+                                status: git.status(statusParams)
+                            });
                         })
                     })
 
