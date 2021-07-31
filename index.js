@@ -43,7 +43,7 @@ class GitClient {
 
         let pattern = path.resolve(dir, filepath);
 
-        return glob(pattern, {dot: true, ignore: [".git/**"]})
+        return glob(pattern, {dot: true, ignore: ["**/.git/**"]})
             .then(function (files) {
                 return stat(files)
                     .then(function (file_stats) {
@@ -132,7 +132,7 @@ class GitClient {
 
         let pattern = path.resolve(dir, filepath);
 
-        return glob(pattern, {dot: true, ignore: [".git/**"]})
+        return glob(pattern, {dot: true, ignore: ["**/.git/**"]})
             .then(function (files) {
                 return stat(files)
                     .then(function (file_stats) {
