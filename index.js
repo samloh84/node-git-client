@@ -43,7 +43,7 @@ class GitClient {
 
         let pattern = path.resolve(dir, filepath);
 
-        return glob(pattern)
+        return glob(pattern, {dot:true})
             .then(function (files) {
                 return stat(files)
                     .then(function (file_stats) {
